@@ -1,0 +1,1 @@
+from .wecomsan import WecomSan

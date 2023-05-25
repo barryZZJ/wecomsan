@@ -5,21 +5,17 @@ from typing import Optional
 
 
 class WecomSan:
-    def __init__(self, cid, aid, secret, access_token=None):
+    def __init__(self, cid, aid, secret):
         self.cid = cid
         self.aid = aid
         self.secret = secret
-        self._access_token = access_token
 
     @property
     def access_token(self):
-        if self._access_token and len(self._access_token) > 0:
-            return self._access_token
-
         get_token_url = f"https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={self.cid}&corpsecret={self.secret}"
-        self._access_token = requests.get(get_token_url).json().get('access_token')
-        if self._access_token and len(self._access_token) > 0:
-            return self._access_token
+        access_token = requests.get(get_token_url).json().get('access_token')
+        if access_token and len(access_token) > 0:
+            return access_token
 
         raise ModuleNotFoundError('fail to get access token')
 

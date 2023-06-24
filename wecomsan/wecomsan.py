@@ -20,6 +20,8 @@ class WecomSan:
         raise ModuleNotFoundError('fail to get access token')
 
     def send(self, text, touid='@all') -> str:
+        """touid can be UserID1. use '|' to join multiple userids.
+        See: https://developer.work.weixin.qq.com/document/path/90236"""
         send_msg_url = f'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={self.access_token}'
         data = {
             "touser": touid,

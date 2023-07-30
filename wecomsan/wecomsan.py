@@ -63,7 +63,10 @@ class WecomSan:
         # resp example:
         # fail: {'errcode': 60020, 'errmsg': 'not allow to access from your ip, hint: [1689001883303762673458360], from ip: xxx.xxx.xxx.xxx, more info at https://open.work.weixin.qq.com/devtool/query?e=60020'}
         # success: {'errcode': 0, 'errmsg': 'ok', 'msgid': '3yzdAQ63LCLTa8NCVqmn2XDsTL3oQir4vxSu6NZvYrF186IzBMslYUNRJi9fEfyPMTKKb2gJBEEiRo3PLa7tag'}
-        return WecomApiRespBase.model_validate_json(resp.content)
+        respModel = WecomApiRespBase.model_validate_json(resp.content)
+        if respModel.errcode != SUCCESS:
+            raise WecomSanRespError(respModel.errcode, respModel.errmsg)
+        return respModel
 
     def send_autosplit(self, text, touid='@all', max_content_bytes=2048) -> bool:
         """split text into `max_content_bytes` chunks before sending."""
@@ -93,7 +96,10 @@ class WecomSan:
             "duplicate_check_interval": 600
         }
         resp = requests.post(send_msg_url, data=json.dumps(data), **self.requests_kwargs)
-        return WecomApiRespBase.model_validate_json(resp.content)
+        respModel = WecomApiRespBase.model_validate_json(resp.content)
+        if respModel.errcode != SUCCESS:
+            raise WecomSanRespError(respModel.errcode, respModel.errmsg)
+        return respModel
 
     def send_markdown(self, text, touid='@all') -> WecomApiRespBase:
         """Only supported in wecom app.
@@ -111,7 +117,10 @@ class WecomSan:
             "duplicate_check_interval": 600
         }
         resp = requests.post(send_msg_url, data=json.dumps(data), **self.requests_kwargs)
-        return WecomApiRespBase.model_validate_json(resp.content)
+        respModel = WecomApiRespBase.model_validate_json(resp.content)
+        if respModel.errcode != SUCCESS:
+            raise WecomSanRespError(respModel.errcode, respModel.errmsg)
+        return respModel
 
     def send_textcard(self, title, description, url, btntxt='详情', touid='@all'):
         """Supports WeChat, but btntxt is not changeable in WeChat.
@@ -138,7 +147,10 @@ class WecomSan:
             "duplicate_check_interval": 600
         }
         resp = requests.post(send_msg_url, data=json.dumps(data), **self.requests_kwargs)
-        return WecomApiRespBase.model_validate_json(resp.content)
+        respModel = WecomApiRespBase.model_validate_json(resp.content)
+        if respModel.errcode != SUCCESS:
+            raise WecomSanRespError(respModel.errcode, respModel.errmsg)
+        return respModel
 
     def upload_temp_media(
         self,

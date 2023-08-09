@@ -201,9 +201,9 @@ class WecomSan:
         raise WecomSanRespError(respModel.errcode, respModel.errmsg)
 
     def upload_html(
-            self,
-            filename: str,
-            content: str,
+        self,
+        filename: str,
+        content: str,
     ) -> WecomApiRespUploadTempMedia:
         return self.upload_temp_media(filename.replace('.html', '') + '.html', content, len(content), 'text/html', 'file')
 

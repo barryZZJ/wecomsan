@@ -102,7 +102,7 @@ class WecomSan:
         return respModel
 
     def send_markdown(self, text, touid='@all') -> WecomApiRespBase:
-        """Only supported in wecom app.
+        """Only supported in wecom app, not wechat.
 
         Not supported: ![alt](url)
         """

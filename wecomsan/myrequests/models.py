@@ -195,7 +195,7 @@ class RequestEncodingMixin:
                 fdata = fp
 
             # move 'filelength' field to Content-Disposition
-            filelength = fh.pop('filelength', None)
+            filelength = fh.pop('filelength', None) if fh else None
 
             rf = RequestField(name=k, data=fdata, filename=fn, headers=fh)
             rf.make_multipart(content_type=ft)

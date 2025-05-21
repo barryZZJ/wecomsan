@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='wecomsan',
-    version='0.3',
+    version='0.4',
     author='Barry ZZJ',
     description='wecom interface api',
     packages=find_packages(),

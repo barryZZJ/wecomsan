@@ -48,7 +48,9 @@ class WecomSan:
 
     def send(self, text, touid='@all') -> WecomApiRespBase:
         """touid can be UserID1. use '|' to join multiple userids.
-        See: https://developer.work.weixin.qq.com/document/path/90236"""
+        See: https://developer.work.weixin.qq.com/document/path/90236
+        Use <a> to link to a URL
+        """
         send_msg_url = f'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={self.access_token}'
         data = {
             "touser": touid,
@@ -74,6 +76,13 @@ class WecomSan:
         for chunk in split_text(text, max_content_bytes):
             resps.append(self.send(chunk, touid))
         return all(resp.errcode == SUCCESS for resp in resps)
+
+    def send_autosplit2(self, text, touid='@all', max_content_bytes=2048) -> list[WecomApiRespBase]:
+        """split text into `max_content_bytes` chunks before sending."""
+        resps = []
+        for chunk in split_text(text, max_content_bytes):
+            resps.append(self.send(chunk, touid))
+        return resps
 
     def send_image(self, base64_content, touid='@all') -> Optional[WecomApiRespBase]:
         upload_url = f'https://qyapi.weixin.qq.com/cgi-bin/media/upload?access_token={self.access_token}&type=image'
